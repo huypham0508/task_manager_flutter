@@ -71,11 +71,11 @@ class HomeScreen extends StatelessWidget {
               TaskFilter.incomplete,
               "Incomplete tasks",
             ),
-            _buildFilterMenuItem(
-              context,
-              TaskFilter.completed,
-              "Completed tasks",
-            ),
+            // _buildFilterMenuItem(
+            //   context,
+            //   TaskFilter.completed,
+            //   "Completed tasks",
+            // ),
           ],
       icon: const Icon(Icons.filter_list),
     );
