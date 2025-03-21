@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
+import 'package:task_manager_app/core/enum/task_filter.dart';
 import 'package:task_manager_app/data/models/task_model.dart';
 import 'package:task_manager_app/presentation/components/task_tile.dart';
 import 'package:task_manager_app/presentation/providers/theme_provider.dart';
@@ -20,6 +21,34 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(FlutterI18n.translate(context, "Task Manager")),
         actions: [
+          PopupMenuButton<TaskFilter>(
+            onSelected: (value) {
+              Provider.of<TaskProvider>(
+                context,
+                listen: false,
+              ).updateFilter(value);
+            },
+            itemBuilder:
+                (context) => [
+                  PopupMenuItem(
+                    value: TaskFilter.all,
+                    child: Text(FlutterI18n.translate(context, "All tasks")),
+                  ),
+                  PopupMenuItem(
+                    value: TaskFilter.incomplete,
+                    child: Text(
+                      FlutterI18n.translate(context, "Incomplete tasks"),
+                    ),
+                  ),
+                  PopupMenuItem(
+                    value: TaskFilter.completed,
+                    child: Text(
+                      FlutterI18n.translate(context, "Completed tasks"),
+                    ),
+                  ),
+                ],
+            icon: const Icon(Icons.filter_list),
+          ),
           IconButton(
             onPressed: () {
               themeProvider.toggleTheme(

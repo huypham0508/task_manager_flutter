@@ -24,5 +24,8 @@
   "Not Completed": "Not Completed",
   "Mark as Completed": "Mark as Completed",
   "Subtask List": "Subtask List",
+  "Incomplete tasks": "Incomplete tasks",
+  "All tasks": "All tasks",
+  "Completed tasks": "Completed tasks",
   "Are you sure you want to delete the task '{taskTitle}'?": "Are you sure you want to delete the task '{taskTitle}'?"
 }
