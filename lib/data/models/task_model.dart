@@ -22,7 +22,7 @@ class Task {
     required this.createdAt,
     this.color = const Color(0xFF2196F3),
     this.subTasks = const [],
-    this.position = 0,
+    this.position = 10000000,
   });
 
   double get completionPercentage {
