@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:task_manager_app/core/enum/task_filter.dart';
 import '../../data/models/task_model.dart';
 import '../../data/repositories/task_repository.dart';
 
@@ -10,8 +11,27 @@ class TaskProvider extends ChangeNotifier {
   List<Task> _tasks = [];
   List<Task> get tasks => _tasks;
 
+  TaskFilter _filter = TaskFilter.all;
+  TaskFilter get filter => _filter;
+
+  void updateFilter(TaskFilter newFilter) {
+    _filter = newFilter;
+    notifyListeners();
+    loadTasks();
+  }
+
   Future<void> loadTasks() async {
-    _tasks = await _taskRepository.getTasks();
+    switch (_filter) {
+      case TaskFilter.completed:
+        _tasks = await _taskRepository.getFilteredTasks(isCompleted: true);
+        break;
+      case TaskFilter.incomplete:
+        _tasks = await _taskRepository.getFilteredTasks(isCompleted: false);
+        break;
+      default:
+        _tasks = await _taskRepository.getTasks();
+        break;
+    }
     notifyListeners();
   }
 

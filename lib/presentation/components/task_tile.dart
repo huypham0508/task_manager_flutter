@@ -54,26 +54,22 @@ class TaskTile extends StatelessWidget {
                     ),
                   ],
                 )
-                : GestureDetector(
-                  onTap: onTap,
-                  child: Container(
-                    width: 35,
-                    height: 35,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.green, width: 2),
-                      color:
-                          task.isCompleted ? Colors.green : Colors.transparent,
-                    ),
-                    child:
-                        task.isCompleted
-                            ? const Icon(
-                              Icons.check_rounded,
-                              size: 20,
-                              color: Colors.white,
-                            )
-                            : null,
+                : Container(
+                  width: 35,
+                  height: 35,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.green, width: 2),
+                    color: task.isCompleted ? Colors.green : Colors.transparent,
                   ),
+                  child:
+                      task.isCompleted
+                          ? const Icon(
+                            Icons.check_rounded,
+                            size: 20,
+                            color: Colors.white,
+                          )
+                          : null,
                 ),
             const SizedBox(width: 16),
             Expanded(
@@ -100,6 +96,14 @@ class TaskTile extends StatelessWidget {
                     style: TextStyle(
                       color: Colors.white.withValues(alpha: 0.7),
                       fontSize: 14,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    Helper.formatTime(task.dueDate),
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.white.withValues(alpha: 0.7),
                     ),
                   ),
                 ],
@@ -323,30 +327,13 @@ class TaskTile extends StatelessWidget {
                                   final subTask = task.subTasks[index];
                                   return SubTaskItem(
                                     subTask: subTask,
-                                    onToggleCompleted: (value) {
-                                      setState(() {
-                                        task.subTasks[index] = subTask.copyWith(
-                                          isCompleted: value!,
-                                        );
-                                      });
-                                      taskProvider.updateSubTask(
-                                        task.subTasks[index],
-                                      );
-                                      if (task.subTasks.every(
-                                        (st) => st.isCompleted,
-                                      )) {
-                                        taskProvider.updateTask(
-                                          task.copyWith(isCompleted: true),
-                                        );
-                                      }
-                                    },
+                                    onToggleCompleted: (_) => onTap,
                                   );
                                 },
                               ),
                             ),
                           ],
                           const SizedBox(height: 15),
-
                           TextButton(
                             onPressed: () => Navigator.pop(context),
                             child: Text(

@@ -255,20 +255,6 @@ class TaskDetailScreenState extends State<TaskDetailScreen> {
                   },
                 ),
                 const SizedBox(height: 10),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    FlutterI18n.translate(context, "Choose color"),
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                ColorPicker(
-                  selectedColor: _selectedColor,
-                  colorOptions: _colorOptions,
-                  onColorSelected: _selectColor,
-                ),
-                const SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -310,6 +296,20 @@ class TaskDetailScreenState extends State<TaskDetailScreen> {
                       ),
                     ),
                   ],
+                ),
+                const SizedBox(height: 10),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    FlutterI18n.translate(context, "Choose color"),
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                ColorPicker(
+                  selectedColor: _selectedColor,
+                  colorOptions: _colorOptions,
+                  onColorSelected: _selectColor,
                 ),
                 const SizedBox(height: 10),
                 SubTaskListWidget(
