@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:task_manager_app/core/enum/task_filter.dart';
+import 'package:task_manager_app/core/services/notification_service.dart';
+
 import '../../data/models/task_model.dart';
 import '../../data/repositories/task_repository.dart';
 
 class TaskProvider extends ChangeNotifier {
   final TaskRepository _taskRepository;
+  final NotificationService _notificationService = NotificationService();
 
   TaskProvider(this._taskRepository);
 
   List<Task> _tasks = [];
   List<Task> get tasks => _tasks;
-
   TaskFilter _filter = TaskFilter.all;
   TaskFilter get filter => _filter;
 
@@ -37,6 +39,12 @@ class TaskProvider extends ChangeNotifier {
 
   Future<void> addTask(Task task) async {
     await _taskRepository.insertTask(task);
+    _notificationService.scheduleNotification(
+      id: generateNotificationId(),
+      title: "Task Reminder",
+      body: "You have a task: ${task.title} due soon!",
+      scheduledTime: task.dueDate,
+    );
     await loadTasks();
   }
 
@@ -63,7 +71,13 @@ class TaskProvider extends ChangeNotifier {
         await _taskRepository.updateSubTask(subTask);
       }
     }
-
+    await _notificationService.cancelNotification(task.id!);
+    _notificationService.scheduleNotification(
+      id: generateNotificationId(),
+      title: "Task Reminder",
+      body: "You have a task: ${task.title} due soon!",
+      scheduledTime: task.dueDate,
+    );
     await _taskRepository.updateTask(task);
     await loadTasks();
     notifyListeners();
@@ -78,6 +92,7 @@ class TaskProvider extends ChangeNotifier {
     await _taskRepository.deleteTask(id);
     _tasks.removeWhere((task) => task.id == id);
     notifyListeners();
+    await _notificationService.cancelNotification(id);
   }
 
   void toggleTaskCompletion(Task task) {
@@ -97,5 +112,9 @@ class TaskProvider extends ChangeNotifier {
       await _taskRepository.updateTask(_tasks[i]);
     }
     notifyListeners();
+  }
+
+  int generateNotificationId() {
+    return DateTime.now().millisecondsSinceEpoch.remainder(2147483647);
   }
 }
