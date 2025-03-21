@@ -21,12 +21,61 @@ class TaskProvider extends ChangeNotifier {
   }
 
   Future<void> updateTask(Task task) async {
+    final existingSubTasks = await _taskRepository.getSubTasks(task.id!);
+    final deletedSubTasks =
+        existingSubTasks
+            .where(
+              (oldSubTask) =>
+                  !task.subTasks.any(
+                    (newSubTask) => newSubTask.id == oldSubTask.id,
+                  ),
+            )
+            .toList();
+
+    for (var subTask in deletedSubTasks) {
+      await _taskRepository.deleteSubTask(subTask.id!);
+    }
+
+    for (var subTask in task.subTasks) {
+      if (subTask.id == null) {
+        await _taskRepository.insertSubTask(subTask.copyWith(taskId: task.id));
+      } else {
+        await _taskRepository.updateSubTask(subTask);
+      }
+    }
+
     await _taskRepository.updateTask(task);
     await loadTasks();
+    notifyListeners();
+  }
+
+  void updateSubTask(SubTask subTask) async {
+    await _taskRepository.updateSubTask(subTask);
+    notifyListeners();
   }
 
   Future<void> deleteTask(int id) async {
     await _taskRepository.deleteTask(id);
-    await loadTasks();
+    _tasks.removeWhere((task) => task.id == id);
+    notifyListeners();
+  }
+
+  void toggleTaskCompletion(Task task) {
+    final updatedTask = task.copyWith(isCompleted: !task.isCompleted);
+    updateTask(updatedTask);
+  }
+
+  void moveTask(int oldIndex, int newIndex) async {
+    if (oldIndex < newIndex) {
+      newIndex -= 1;
+    }
+
+    final task = _tasks.removeAt(oldIndex);
+    _tasks.insert(newIndex, task);
+    for (int i = 0; i < _tasks.length; i++) {
+      _tasks[i] = _tasks[i].copyWith(position: i);
+      await _taskRepository.updateTask(_tasks[i]);
+    }
+    notifyListeners();
   }
 }
