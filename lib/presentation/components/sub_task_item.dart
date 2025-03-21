@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:task_manager_app/data/models/task_model.dart';
+import 'package:task_manager_app/core/constants/app_colors.dart';
+import 'package:task_manager_app/data/models/sub_task_model.dart';
 
 class SubTaskItem extends StatelessWidget {
   final SubTask subTask;
@@ -29,8 +30,8 @@ class SubTaskItem extends StatelessWidget {
         children: [
           Checkbox(
             shape: const CircleBorder(),
-            checkColor: Colors.white,
-            activeColor: Colors.green,
+            checkColor: AppColors.darkText,
+            activeColor: AppColors.green,
             value: subTask.isCompleted,
             onChanged: onToggleCompleted,
           ),
@@ -48,7 +49,7 @@ class SubTaskItem extends StatelessWidget {
           ),
           if (onDelete != null)
             IconButton(
-              icon: const Icon(Icons.close, color: Colors.red),
+              icon: const Icon(Icons.close, color: AppColors.red),
               onPressed: onDelete,
             ),
         ],

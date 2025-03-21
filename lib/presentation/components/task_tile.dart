@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
+import 'package:task_manager_app/core/constants/app_colors.dart';
 import 'package:task_manager_app/core/utils/helper.dart';
 import 'package:task_manager_app/data/models/task_model.dart';
 import 'package:task_manager_app/presentation/components/sub_task_Item.dart';
@@ -33,44 +34,7 @@ class TaskTile extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            task.subTasks.isNotEmpty
-                ? Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    SizedBox(
-                      width: 35,
-                      height: 35,
-                      child: CircularProgressIndicator(
-                        value: task.completionPercentage / 100,
-                        backgroundColor: Colors.white,
-                        valueColor: const AlwaysStoppedAnimation<Color>(
-                          Colors.green,
-                        ),
-                      ),
-                    ),
-                    Text(
-                      "${task.completionPercentage.toInt()}%",
-                      style: const TextStyle(color: Colors.white, fontSize: 10),
-                    ),
-                  ],
-                )
-                : Container(
-                  width: 35,
-                  height: 35,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.green, width: 2),
-                    color: task.isCompleted ? Colors.green : Colors.transparent,
-                  ),
-                  child:
-                      task.isCompleted
-                          ? const Icon(
-                            Icons.check_rounded,
-                            size: 20,
-                            color: Colors.white,
-                          )
-                          : null,
-                ),
+            task.subTasks.isNotEmpty ? _progressTask() : _checkBox(),
             const SizedBox(width: 16),
             Expanded(
               child: Column(
@@ -79,7 +43,7 @@ class TaskTile extends StatelessWidget {
                   Text(
                     task.title,
                     style: TextStyle(
-                      color: Colors.white,
+                      color: AppColors.darkText,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                       decoration:
@@ -94,7 +58,7 @@ class TaskTile extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      color: Colors.white.withValues(alpha: 0.7),
+                      color: AppColors.darkText.withValues(alpha: 0.7),
                       fontSize: 14,
                     ),
                   ),
@@ -103,14 +67,14 @@ class TaskTile extends StatelessWidget {
                     Helper.formatTime(task.dueDate),
                     style: TextStyle(
                       fontSize: 14,
-                      color: Colors.white.withValues(alpha: 0.7),
+                      color: AppColors.darkText.withValues(alpha: 0.7),
                     ),
                   ),
                 ],
               ),
             ),
             IconButton(
-              icon: const Icon(Icons.edit, color: Colors.white),
+              icon: const Icon(Icons.edit, color: AppColors.darkText),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -123,6 +87,47 @@ class TaskTile extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Container _checkBox() {
+    return Container(
+      width: 35,
+      height: 35,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(color: AppColors.green, width: 2),
+        color: task.isCompleted ? AppColors.green : Colors.transparent,
+      ),
+      child:
+          task.isCompleted
+              ? const Icon(
+                Icons.check_rounded,
+                size: 20,
+                color: AppColors.darkText,
+              )
+              : null,
+    );
+  }
+
+  Stack _progressTask() {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        SizedBox(
+          width: 35,
+          height: 35,
+          child: CircularProgressIndicator(
+            value: task.completionPercentage / 100,
+            backgroundColor: AppColors.darkText,
+            valueColor: const AlwaysStoppedAnimation<Color>(AppColors.green),
+          ),
+        ),
+        Text(
+          "${task.completionPercentage.toInt()}%",
+          style: const TextStyle(color: AppColors.darkText, fontSize: 10),
+        ),
+      ],
     );
   }
 
@@ -165,7 +170,7 @@ class TaskTile extends StatelessWidget {
                             task.description,
                             style: TextStyle(
                               fontSize: 16,
-                              color: Colors.grey.shade700,
+                              color: AppColors.grey700,
                             ),
                             textAlign: TextAlign.center,
                           ),
@@ -203,7 +208,7 @@ class TaskTile extends StatelessWidget {
                           },
                           icon: Icon(
                             task.isCompleted ? Icons.close : Icons.check,
-                            color: Colors.white,
+                            color: AppColors.darkText,
                           ),
                           label: Text(
                             task.isCompleted
@@ -215,11 +220,13 @@ class TaskTile extends StatelessWidget {
                                   context,
                                   "Mark as Completed",
                                 ),
-                            style: const TextStyle(color: Colors.white),
+                            style: const TextStyle(color: AppColors.darkText),
                           ),
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
-                                task.isCompleted ? Colors.red : Colors.green,
+                                task.isCompleted
+                                    ? AppColors.red
+                                    : AppColors.green,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
@@ -255,8 +262,14 @@ class TaskTile extends StatelessWidget {
                 body: SafeArea(
                   child: Center(
                     child: Container(
-                      padding: const EdgeInsets.all(10),
-                      margin: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 30,
+                      ),
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 30,
+                      ),
                       decoration: BoxDecoration(
                         color: theme.scaffoldBackgroundColor,
                         borderRadius: BorderRadius.circular(15),
@@ -278,7 +291,7 @@ class TaskTile extends StatelessWidget {
                               task.description,
                               style: TextStyle(
                                 fontSize: 16,
-                                color: Colors.grey.shade700,
+                                color: AppColors.grey700,
                               ),
                               textAlign: TextAlign.center,
                             ),
@@ -287,10 +300,10 @@ class TaskTile extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Icon(
+                              Icon(
                                 Icons.access_time,
                                 size: 16,
-                                color: Colors.blueGrey,
+                                color: AppColors.grey700,
                               ),
                               const SizedBox(width: 5),
                               Text(
@@ -303,7 +316,7 @@ class TaskTile extends StatelessWidget {
                                 ),
                                 style: TextStyle(
                                   fontSize: 14,
-                                  color: Colors.blueGrey.shade700,
+                                  color: AppColors.grey700,
                                 ),
                               ),
                             ],

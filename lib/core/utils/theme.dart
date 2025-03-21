@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:task_manager_app/core/constants/app_colors.dart';
 
 final ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
-  scaffoldBackgroundColor: Color(0xFFF5F5F5),
-  cardColor: Color(0xFFFFFFFF),
-  primaryColor: Color(0xE91E63),
-  iconTheme: IconThemeData(color: Color(0xE91E63)),
-  textTheme: TextTheme(bodyLarge: TextStyle(color: Color(0xFF333333))),
+  scaffoldBackgroundColor: AppColors.lightBackground,
+  cardColor: AppColors.lightCard,
+  primaryColor: AppColors.lightPrimary,
+  iconTheme: IconThemeData(color: AppColors.lightPrimary),
+  textTheme: TextTheme(bodyLarge: TextStyle(color: AppColors.lightText)),
 );
 
 final ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
-  scaffoldBackgroundColor: Color(0xFF1A1C3D),
-  cardColor: Color(0xFF0D103F),
-  primaryColor: Color(0xE91E63),
-  iconTheme: IconThemeData(color: Color(0xE91E63)),
-  textTheme: TextTheme(bodyLarge: TextStyle(color: Colors.white)),
+  scaffoldBackgroundColor: AppColors.darkBackground,
+  cardColor: AppColors.darkCard,
+  primaryColor: AppColors.darkPrimary,
+  iconTheme: IconThemeData(color: AppColors.darkPrimary),
+  textTheme: TextTheme(bodyLarge: TextStyle(color: AppColors.darkText)),
 );

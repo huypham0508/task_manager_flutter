@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:task_manager_app/core/constants/app_colors.dart';
 
 class CustomSnackbar {
   static void show(
@@ -12,12 +13,12 @@ class CustomSnackbar {
           children: [
             Container(
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.white),
+                border: Border.all(color: AppColors.darkText),
                 borderRadius: BorderRadius.circular(100),
               ),
               child: Icon(
                 isSuccess ? Icons.check_rounded : Icons.error_rounded,
-                color: Colors.white,
+                color: AppColors.darkText,
               ),
             ),
             const SizedBox(width: 10),
@@ -25,14 +26,14 @@ class CustomSnackbar {
               child: Text(
                 message,
                 style: const TextStyle(
-                  color: Colors.white,
+                  color: AppColors.darkText,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
           ],
         ),
-        backgroundColor: isSuccess ? Colors.green : Colors.red,
+        backgroundColor: isSuccess ? AppColors.green : AppColors.red,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         margin: const EdgeInsets.all(16),

@@ -1,6 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:task_manager_app/core/constants/tables.dart';
 import 'package:task_manager_app/core/services/database_service.dart';
+import 'package:task_manager_app/data/models/sub_task_model.dart';
 import '../models/task_model.dart';
 
 class TaskRepository extends DatabaseService {

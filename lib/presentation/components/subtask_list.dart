@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-import 'package:task_manager_app/data/models/task_model.dart';
+import 'package:task_manager_app/data/models/sub_task_model.dart';
 import 'package:task_manager_app/presentation/components/sub_task_item.dart';
 
 class SubTaskListWidget extends StatefulWidget {
