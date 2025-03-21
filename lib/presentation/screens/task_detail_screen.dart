@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 import 'package:task_manager_app/core/utils/custom_snackbar.dart';
 import 'package:task_manager_app/core/utils/helper.dart';
@@ -152,7 +153,9 @@ class TaskDetailScreenState extends State<TaskDetailScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.task == null ? 'Thêm công việc' : 'Chỉnh sửa công việc',
+          widget.task == null
+              ? FlutterI18n.translate(context, "Add Task")
+              : FlutterI18n.translate(context, "Edit Task"),
         ),
         actions: [
           if (widget.task != null)
@@ -178,7 +181,10 @@ class TaskDetailScreenState extends State<TaskDetailScreen> {
                 TextFormField(
                   controller: _titleController,
                   decoration: InputDecoration(
-                    hintText: 'Write a title...',
+                    hintText: FlutterI18n.translate(
+                      context,
+                      "Write a title...",
+                    ),
                     filled: true,
                     fillColor: isDarkMode ? Colors.grey[800] : Colors.white,
                     border: OutlineInputBorder(
@@ -202,10 +208,16 @@ class TaskDetailScreenState extends State<TaskDetailScreen> {
                   maxLines: 1,
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
-                      return 'Title cannot be empty';
+                      return FlutterI18n.translate(
+                        context,
+                        "Title cannot be empty",
+                      );
                     }
                     if (value.length < 3) {
-                      return 'Title must be at least 3 characters';
+                      return FlutterI18n.translate(
+                        context,
+                        "Title must be at least 3 characters",
+                      );
                     }
                     return null;
                   },
@@ -217,7 +229,7 @@ class TaskDetailScreenState extends State<TaskDetailScreen> {
                     color: isDarkMode ? Colors.white : Colors.black,
                   ),
                   decoration: InputDecoration(
-                    hintText: "Write a note...",
+                    hintText: FlutterI18n.translate(context, "Write a note..."),
                     hintStyle: TextStyle(
                       color:
                           isDarkMode
@@ -234,16 +246,19 @@ class TaskDetailScreenState extends State<TaskDetailScreen> {
                   maxLines: 4,
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
-                      return 'Description cannot be empty';
+                      return FlutterI18n.translate(
+                        context,
+                        "Description cannot be empty",
+                      );
                     }
                     return null;
                   },
                 ),
                 const SizedBox(height: 10),
-                const Align(
+                Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    "Chọn màu nền:",
+                    FlutterI18n.translate(context, "Choose color"),
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -257,8 +272,8 @@ class TaskDetailScreenState extends State<TaskDetailScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      "Due date",
+                    Text(
+                      FlutterI18n.translate(context, "Due date"),
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
@@ -305,11 +320,11 @@ class TaskDetailScreenState extends State<TaskDetailScreen> {
                 GestureDetector(
                   onTap: _addSubTask,
                   child: Row(
-                    children: const [
+                    children: [
                       Icon(Icons.add, color: Colors.grey),
                       SizedBox(width: 8),
                       Text(
-                        "Add a subtask",
+                        FlutterI18n.translate(context, "Add a subtask"),
                         style: TextStyle(color: Colors.grey, fontSize: 16),
                       ),
                     ],
@@ -318,7 +333,7 @@ class TaskDetailScreenState extends State<TaskDetailScreen> {
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: _saveTask,
-                  child: const Text("Lưu công việc"),
+                  child: Text(FlutterI18n.translate(context, "Save")),
                 ),
               ],
             ),
