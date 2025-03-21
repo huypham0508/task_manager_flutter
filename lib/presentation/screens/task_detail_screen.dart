@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
+import 'package:task_manager_app/core/constants/app_colors.dart';
 import 'package:task_manager_app/core/utils/custom_snackbar.dart';
 import 'package:task_manager_app/core/utils/helper.dart';
+import 'package:task_manager_app/data/models/sub_task_model.dart';
 import 'package:task_manager_app/presentation/components/color_picker.dart';
 import 'package:task_manager_app/presentation/components/subtask_list.dart';
 
@@ -26,12 +28,12 @@ class TaskDetailScreenState extends State<TaskDetailScreen> {
   List<SubTask> _subTasks = [];
 
   final List<Color> _colorOptions = [
-    Colors.blue,
-    Colors.deepPurple,
-    Colors.red,
-    Colors.orange,
-    Colors.purple,
-    Colors.teal,
+    AppColors.blue,
+    AppColors.deepPurple,
+    AppColors.red,
+    AppColors.orange,
+    AppColors.purple,
+    AppColors.teal,
   ];
 
   @override
@@ -152,6 +154,7 @@ class TaskDetailScreenState extends State<TaskDetailScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: theme.scaffoldBackgroundColor,
         title: Text(
           widget.task == null
               ? FlutterI18n.translate(context, "Add Task")
@@ -178,123 +181,11 @@ class TaskDetailScreenState extends State<TaskDetailScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                TextFormField(
-                  controller: _titleController,
-                  decoration: InputDecoration(
-                    hintText: FlutterI18n.translate(
-                      context,
-                      "Write a title...",
-                    ),
-                    filled: true,
-                    fillColor: theme.cardColor,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none,
-                    ),
-                    hintStyle: TextStyle(
-                      color:
-                          isDarkMode
-                              ? Colors.white.withValues(alpha: 0.5)
-                              : Colors.black.withValues(alpha: 0.5),
-                    ),
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 12,
-                    ),
-                  ),
-                  style: TextStyle(
-                    color: isDarkMode ? Colors.white : Colors.black,
-                  ),
-                  maxLines: 1,
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return FlutterI18n.translate(
-                        context,
-                        "Title cannot be empty",
-                      );
-                    }
-                    if (value.length < 3) {
-                      return FlutterI18n.translate(
-                        context,
-                        "Title must be at least 3 characters",
-                      );
-                    }
-                    return null;
-                  },
-                ),
+                _buildTaskTitle(context, theme, isDarkMode),
                 const SizedBox(height: 10),
-                TextFormField(
-                  controller: _descriptionController,
-                  style: TextStyle(color: theme.scaffoldBackgroundColor),
-                  decoration: InputDecoration(
-                    hintText: FlutterI18n.translate(context, "Write a note..."),
-                    hintStyle: TextStyle(
-                      color:
-                          isDarkMode
-                              ? Colors.white.withValues(alpha: 0.5)
-                              : Colors.black.withValues(alpha: 0.5),
-                    ),
-                    filled: true,
-                    fillColor: theme.cardColor,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                  maxLines: 4,
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return FlutterI18n.translate(
-                        context,
-                        "Description cannot be empty",
-                      );
-                    }
-                    return null;
-                  },
-                ),
+                _buildTaskDesc(isDarkMode, context, theme),
                 const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      FlutterI18n.translate(context, "Due date"),
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () => _selectDueDate(context),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 8,
-                        ),
-                        decoration: BoxDecoration(
-                          color: isDarkMode ? Colors.grey[800] : Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Row(
-                          children: [
-                            Text(
-                              Helper.formatTime(_selectedDueDate),
-                              style: TextStyle(
-                                color: isDarkMode ? Colors.white : Colors.black,
-
-                                fontSize: 14,
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            const Icon(
-                              Icons.arrow_drop_down,
-                              color: Colors.black,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                _buildDueDate(context, theme, isDarkMode),
                 const SizedBox(height: 10),
                 Align(
                   alignment: Alignment.centerLeft,
@@ -329,15 +220,136 @@ class TaskDetailScreenState extends State<TaskDetailScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: _saveTask,
-                  child: Text(FlutterI18n.translate(context, "Save")),
-                ),
               ],
             ),
           ),
         ),
       ),
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.symmetric(vertical: 30),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ElevatedButton(
+              style: ButtonStyle(),
+              onPressed: _saveTask,
+              child: Text(
+                FlutterI18n.translate(context, "Save"),
+                style: theme.textTheme.bodyLarge,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Row _buildDueDate(BuildContext context, ThemeData theme, bool isDarkMode) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          FlutterI18n.translate(context, "Due date"),
+          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+        ),
+        GestureDetector(
+          onTap: () => _selectDueDate(context),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(
+              color: theme.cardColor,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Row(
+              children: [
+                Text(
+                  Helper.formatTime(_selectedDueDate),
+                  style: TextStyle(
+                    color: isDarkMode ? AppColors.darkText : Colors.black,
+                    fontSize: 14,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                const Icon(Icons.arrow_drop_down, color: Colors.black),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  TextFormField _buildTaskDesc(
+    bool isDarkMode,
+    BuildContext context,
+    ThemeData theme,
+  ) {
+    return TextFormField(
+      controller: _descriptionController,
+      style: TextStyle(color: isDarkMode ? AppColors.darkText : Colors.black),
+      decoration: InputDecoration(
+        hintText: FlutterI18n.translate(context, "Write a note..."),
+        hintStyle: TextStyle(
+          color:
+              isDarkMode
+                  ? AppColors.darkText.withValues(alpha: 0.5)
+                  : Colors.black.withValues(alpha: 0.5),
+        ),
+        filled: true,
+        fillColor: theme.cardColor,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+      ),
+      maxLines: 4,
+      validator: (value) {
+        if (value == null || value.trim().isEmpty) {
+          return FlutterI18n.translate(context, "Description cannot be empty");
+        }
+        return null;
+      },
+    );
+  }
+
+  TextFormField _buildTaskTitle(
+    BuildContext context,
+    ThemeData theme,
+    bool isDarkMode,
+  ) {
+    return TextFormField(
+      controller: _titleController,
+      decoration: InputDecoration(
+        hintText: FlutterI18n.translate(context, "Write a title..."),
+        filled: true,
+        fillColor: theme.cardColor,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide.none,
+        ),
+        hintStyle: TextStyle(
+          color:
+              isDarkMode
+                  ? AppColors.darkText.withValues(alpha: 0.5)
+                  : Colors.black.withValues(alpha: 0.5),
+        ),
+        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      ),
+      style: TextStyle(color: isDarkMode ? AppColors.darkText : Colors.black),
+      maxLines: 1,
+      validator: (value) {
+        if (value == null || value.trim().isEmpty) {
+          return FlutterI18n.translate(context, "Title cannot be empty");
+        }
+        if (value.length < 3) {
+          return FlutterI18n.translate(
+            context,
+            "Title must be at least 3 characters",
+          );
+        }
+        return null;
+      },
     );
   }
 }
