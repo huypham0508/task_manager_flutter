@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:task_manager_app/data/models/task_model.dart';
 import 'package:task_manager_app/presentation/components/sub_task_item.dart';
 
@@ -21,8 +22,8 @@ class _SubTaskListWidgetState extends State<SubTaskListWidget> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Text(
-          "Danh sách công việc phụ:",
+        Text(
+          FlutterI18n.translate(context, "Subtask List:"),
           style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),

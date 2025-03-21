@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:flutter_i18n/loaders/file_translation_loader.dart';
 import 'package:provider/provider.dart';
 import 'package:task_manager_app/core/utils/theme.dart';
 import 'package:task_manager_app/data/repositories/task_repository.dart';
@@ -31,6 +33,15 @@ class MyApp extends StatelessWidget {
       builder: (context, themeProvider, child) {
         return MaterialApp(
           title: 'Task Manager',
+          localizationsDelegates: [
+            FlutterI18nDelegate(
+              translationLoader: FileTranslationLoader(
+                basePath: "assets/translations",
+                forcedLocale: const Locale("en"),
+              ),
+            ),
+          ],
+          debugShowCheckedModeBanner: false,
           theme: lightTheme,
           darkTheme: darkTheme,
           themeMode: themeProvider.themeMode,

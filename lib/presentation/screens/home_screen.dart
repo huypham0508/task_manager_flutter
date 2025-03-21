@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 import 'package:task_manager_app/data/models/task_model.dart';
 import 'package:task_manager_app/presentation/components/task_tile.dart';
@@ -17,7 +18,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        title: const Text('Task Manager'),
+        title: Text(FlutterI18n.translate(context, "Task Manager")),
         actions: [
           IconButton(
             onPressed: () {
@@ -37,7 +38,7 @@ class HomeScreen extends StatelessWidget {
           if (taskProvider.tasks.isEmpty) {
             return Center(
               child: Text(
-                "Chưa có công việc nào",
+                FlutterI18n.translate(context, "No tasks available"),
                 style: TextStyle(color: theme.textTheme.bodyLarge?.color),
               ),
             );
@@ -98,21 +99,25 @@ class HomeScreen extends StatelessWidget {
           context: context,
           builder:
               (context) => AlertDialog(
-                title: const Text("Xác nhận"),
+                title: Text(FlutterI18n.translate(context, "Confirm")),
                 content: Text(
-                  "Bạn có chắc chắn muốn xóa công việc '${task.title}'?",
+                  FlutterI18n.translate(
+                    context,
+                    "Are you sure you want to delete the task {taskTitle}?",
+                    translationParams: {"taskTitle": task.title},
+                  ),
                 ),
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(false),
-                    child: const Text("Hủy"),
+                    child: Text(FlutterI18n.translate(context, "Cancel")),
                   ),
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).pop(true);
                     },
-                    child: const Text(
-                      "Xóa",
+                    child: Text(
+                      FlutterI18n.translate(context, "Remove"),
                       style: TextStyle(color: Colors.red),
                     ),
                   ),

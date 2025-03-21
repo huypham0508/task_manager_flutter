@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 import 'package:task_manager_app/core/utils/helper.dart';
 import 'package:task_manager_app/data/models/task_model.dart';
@@ -128,7 +129,7 @@ class TaskTile extends StatelessWidget {
       showGeneralDialog(
         context: context,
         barrierDismissible: true,
-        barrierLabel: "Task Details",
+        barrierLabel: FlutterI18n.translate(context, "Task Details"),
         transitionDuration: const Duration(milliseconds: 300),
         pageBuilder: (context, anim1, anim2) {
           return StatefulBuilder(
@@ -176,7 +177,13 @@ class TaskTile extends StatelessWidget {
                             ),
                             const SizedBox(width: 5),
                             Text(
-                              "Hạn: ${Helper.formatTime(task.dueDate)}",
+                              FlutterI18n.translate(
+                                context,
+                                "Due Date: {time}",
+                                translationParams: {
+                                  "time": Helper.formatTime(task.dueDate),
+                                },
+                              ),
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.blueGrey.shade700,
@@ -196,8 +203,14 @@ class TaskTile extends StatelessWidget {
                           ),
                           label: Text(
                             task.isCompleted
-                                ? "Chưa hoàn thành"
-                                : "Đánh dấu hoàn thành",
+                                ? FlutterI18n.translate(
+                                  context,
+                                  "Not Completed",
+                                )
+                                : FlutterI18n.translate(
+                                  context,
+                                  "Mark as Completed",
+                                ),
                             style: const TextStyle(color: Colors.white),
                           ),
                           style: ElevatedButton.styleFrom(
@@ -210,8 +223,8 @@ class TaskTile extends StatelessWidget {
                         ),
                         TextButton(
                           onPressed: () => Navigator.pop(context),
-                          child: const Text(
-                            "Đóng",
+                          child: Text(
+                            FlutterI18n.translate(context, "Cancel"),
                             style: TextStyle(fontSize: 16),
                           ),
                         ),
@@ -228,7 +241,7 @@ class TaskTile extends StatelessWidget {
       showGeneralDialog(
         context: context,
         barrierDismissible: true,
-        barrierLabel: "Task Details",
+        barrierLabel: FlutterI18n.translate(context, "Task Details"),
         transitionDuration: const Duration(milliseconds: 300),
         pageBuilder: (context, anim1, anim2) {
           return StatefulBuilder(
@@ -277,7 +290,13 @@ class TaskTile extends StatelessWidget {
                               ),
                               const SizedBox(width: 5),
                               Text(
-                                "Hạn: ${Helper.formatTime(task.dueDate)}",
+                                FlutterI18n.translate(
+                                  context,
+                                  "Due Date: {time}",
+                                  translationParams: {
+                                    "time": Helper.formatTime(task.dueDate),
+                                  },
+                                ),
                                 style: TextStyle(
                                   fontSize: 14,
                                   color: Colors.blueGrey.shade700,
@@ -289,8 +308,8 @@ class TaskTile extends StatelessWidget {
                           if (task.subTasks.isNotEmpty) ...[
                             const Divider(thickness: 1),
                             const SizedBox(height: 5),
-                            const Text(
-                              "Danh sách công việc phụ",
+                            Text(
+                              FlutterI18n.translate(context, "Subtask List"),
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -330,8 +349,8 @@ class TaskTile extends StatelessWidget {
 
                           TextButton(
                             onPressed: () => Navigator.pop(context),
-                            child: const Text(
-                              "Đóng",
+                            child: Text(
+                              FlutterI18n.translate(context, "Cancel"),
                               style: TextStyle(fontSize: 16),
                             ),
                           ),
