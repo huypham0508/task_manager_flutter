@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-import 'package:flutter_i18n/loaders/file_translation_loader.dart';
 import 'package:provider/provider.dart';
+import 'package:task_manager_app/core/services/notification_service.dart';
 import 'package:task_manager_app/core/utils/theme.dart';
 import 'package:task_manager_app/data/repositories/task_repository.dart';
 import 'package:task_manager_app/presentation/providers/theme_provider.dart';
 
 import 'presentation/providers/task_provider.dart';
 import 'presentation/screens/home_screen.dart';
+import 'package:timezone/data/latest.dart' as tz;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  NotificationService().initNotification();
+  tz.initializeTimeZones();
+
   runApp(
     MultiProvider(
       providers: [

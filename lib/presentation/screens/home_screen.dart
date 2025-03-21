@@ -5,6 +5,7 @@ import 'package:task_manager_app/core/enum/task_filter.dart';
 import 'package:task_manager_app/data/models/task_model.dart';
 import 'package:task_manager_app/presentation/components/task_tile.dart';
 import 'package:task_manager_app/presentation/providers/theme_provider.dart';
+
 import '../providers/task_provider.dart';
 import 'task_detail_screen.dart';
 

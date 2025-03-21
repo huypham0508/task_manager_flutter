@@ -186,7 +186,7 @@ class TaskDetailScreenState extends State<TaskDetailScreen> {
                       "Write a title...",
                     ),
                     filled: true,
-                    fillColor: isDarkMode ? Colors.grey[800] : Colors.white,
+                    fillColor: theme.cardColor,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide.none,
@@ -225,9 +225,7 @@ class TaskDetailScreenState extends State<TaskDetailScreen> {
                 const SizedBox(height: 10),
                 TextFormField(
                   controller: _descriptionController,
-                  style: TextStyle(
-                    color: isDarkMode ? Colors.white : Colors.black,
-                  ),
+                  style: TextStyle(color: theme.scaffoldBackgroundColor),
                   decoration: InputDecoration(
                     hintText: FlutterI18n.translate(context, "Write a note..."),
                     hintStyle: TextStyle(
@@ -237,7 +235,7 @@ class TaskDetailScreenState extends State<TaskDetailScreen> {
                               : Colors.black.withValues(alpha: 0.5),
                     ),
                     filled: true,
-                    fillColor: isDarkMode ? Colors.grey[800] : Colors.white,
+                    fillColor: theme.cardColor,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide.none,

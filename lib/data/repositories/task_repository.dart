@@ -11,6 +11,7 @@ class TaskRepository extends DatabaseService {
   void onCreate(Database db) async {
     db.execute(DBConstants.subTasks.createTableQuery);
     db.execute(DBConstants.task.createTableQuery);
+    //dummy data
     await db.execute('''
     INSERT INTO tasks (title, description, status, due_date, created_at, color, position)
     VALUES
